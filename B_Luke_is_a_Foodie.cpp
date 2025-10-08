@@ -1,46 +1,45 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+typedef long long ll;
 void solve()
 {
-    int n, x;
+    ll n, x;
     cin >> n >> x;
-    set<int> st;
+    vector<ll> a(n);
+    for (ll i = 0; i < n; i++)
+        cin >> a[i];
+
+    vector<pair<ll, ll>> p(n);
     for (int i = 0; i < n; i++)
+        p[i] = {a[i] - x, a[i] + x};
+
+    ll ans = 0;
+    ll l = p[0].first;
+    ll r = p[0].second;
+    for (int i = 1; i < n; i++)
     {
-        int a;
-        cin >> a;
-        st.insert(a);
-    }
-    int maxi = INT_MIN;
-    vector<pair<int, int>> p;
-    for (auto i = st.begin(); i != st.end(); i++)
-    {
-        int miniR = *i - x;
-        int maxiR = *i + x;
-        p.push_back({miniR, maxiR});
-        maxi = min(maxi, maxiR);
-    }
-    int cnt = 0;
-    for (auto &it : p)
-    {
-        int i = it.first;
-        int j = it.second;
-        for (int k = i; k <= j; k++)
+        l = max(l, p[i].first);
+        r = min(r, p[i].second);
+        if (l > r)
         {
-            if (k != maxi)
-                cnt++;
+            ans++;
+            l = p[i].first;
+            r = p[i].second;
         }
     }
-
-    cout << cnt << "\n";
+    cout << ans << endl;
 }
 
 int main()
 {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int t;
     cin >> t;
     while (t--)
         solve();
+
     return 0;
 }
